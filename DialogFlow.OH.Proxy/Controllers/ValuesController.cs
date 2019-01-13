@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DialogFlow.OpenHab.Proxy.Controllers
+namespace DialogFlow.OH.Proxy.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
