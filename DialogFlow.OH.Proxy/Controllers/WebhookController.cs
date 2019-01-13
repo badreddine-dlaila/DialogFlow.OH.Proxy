@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace DialogFlow.OH.Proxy.Controllers
         [HttpPost]
         public async Task<ContentResult> DialogAction()
         {
-            var fulfillmentText = string.Empty;
+            var fulfillmentText = "Error: Unkown device or room :(";
 
             // Parse the body of the request using the Protobuf JSON parser,
             // *not* Json.NET.
@@ -38,7 +39,6 @@ namespace DialogFlow.OH.Proxy.Controllers
 
                 var room = parameters["room"].ToLower();
                 var device = parameters["device"].ToLower();
-                var color = parameters["color"].ToLower();
                 var all = parameters["all"].ToLower();
                 var command = action.Split(".").Last().ToUpper();
 
@@ -46,32 +46,68 @@ namespace DialogFlow.OH.Proxy.Controllers
 
 
                 #region Lights
-                // switch
-
                 if (intent.Contains("light"))
                 {
                     var lights = items.Where(i => i.GroupNames.Contains("Light")).ToList();
 
+                    // switch lights
                     if (intent.Contains("switch"))
                     {
-                        if (string.IsNullOrEmpty(room) || bool.Parse(all))
-                            await _openhabClient.PostItemCommandAsync("Light", command);
-
-                        var itemNamePart = $"{room.Humanize(LetterCasing.Title)}_{"light".Humanize(LetterCasing.Title)}";
-                        var light = lights.FirstOrDefault(i => i.Name.Contains(itemNamePart));
-                        if (light != null)
+                        if (string.IsNullOrEmpty(room) || all=="true")
                         {
-                            await _openhabClient.PostItemCommandAsync(light.Name, command);
-                            fulfillmentText = $"{light.Name.Replace("_", string.Empty).Humanize()} switch {command.Humanize(LetterCasing.AllCaps)}";
+                            await _openhabClient.PostItemCommandAsync("Light", command);
+                            fulfillmentText = $"All lights switched {command.Humanize(LetterCasing.LowerCase)}";
                         }
+
                         else
                         {
-                            fulfillmentText = "Error: Unkown device or room :(";
+                            var itemNamePart = $"{room.Dehumanize().ToLower()}_light";
+                            var light = lights.FirstOrDefault(i => i.Name.ToLower().Contains(itemNamePart));
+
+                            if (light != null)
+                            {
+                                await _openhabClient.PostItemCommandAsync(light.Name, command);
+                                fulfillmentText = $"Switched {command.Humanize(LetterCasing.LowerCase)}";
+                            }
+                        }
+                    }
+
+                    // dimmer Lights
+                    if (intent.Contains("brightness"))
+                    {
+                        var values = request.QueryResult.Parameters.Fields.ToDictionary(pair => pair.Key, v => v.Value.NumberValue);
+                        var changeValue = values.ContainsKey("change-value") ? values["change-value"] : 0;
+                        var finalValue = values["final-value"];
+                        var value = Math.Abs(finalValue) < 0 ? changeValue : finalValue;
+
+                        if (command == "SET")
+                        {
+                            if (string.IsNullOrEmpty(room) || all == "true")
+                            {
+                                var dimmableLights = items.Where(i => i.Type == "Dimmer" && !i.Name.ToLower().Contains("hue"));
+                                foreach (var dimmableLight in dimmableLights)
+                                {
+                                    await _openhabClient.PostItemCommandAsync(dimmableLight.Name, value.ToString(CultureInfo.InvariantCulture));
+                                    fulfillmentText = $"All lights brightness set on {value}";
+                                }
+                            }
+
+                            else
+                            {
+                                var itemNamePart = $"{room.Dehumanize().ToLower()}_light";
+                                var light = lights.FirstOrDefault(i => i.Name.ToLower().Contains(itemNamePart));
+
+                                if (light != null && light.Type == "Dimmer")
+                                {
+                                    await _openhabClient.PostItemCommandAsync(light.Name, value.ToString(CultureInfo.InvariantCulture));
+                                    fulfillmentText = $"Brightness set on {value}";
+                                }
+                            }
                         }
                     }
                 }
 
-               #endregion
+                #endregion
 
                 #region devices
                 //if (intent.Contains("device.switch"))
