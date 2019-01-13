@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ using Google.Protobuf;
 using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Openhab.Clinet;
+using Openhab.Clinet.Models;
 
 namespace DialogFlow.OH.Proxy.Controllers
 {
@@ -21,6 +23,12 @@ namespace DialogFlow.OH.Proxy.Controllers
         public WebhookController(IOpenhabClient openhabClient)
         {
             _openhabClient = openhabClient;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<EnrichedItemDTO>> GetItems()
+        {
+            return await _openhabClient.GetItemsAsync();
         }
 
         [HttpPost]
@@ -52,7 +60,7 @@ namespace DialogFlow.OH.Proxy.Controllers
 
                     // switch lights
                     if (intent.Contains("switch"))
-                    {
+                        {
                         if (string.IsNullOrEmpty(room) || all=="true")
                         {
                             await _openhabClient.PostItemCommandAsync("Light", command);
