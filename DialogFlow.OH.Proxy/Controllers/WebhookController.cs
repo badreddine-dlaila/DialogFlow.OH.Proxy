@@ -26,6 +26,7 @@ namespace DialogFlow.OH.Proxy.Controllers
         }
 
         [HttpGet]
+        [Route("devices")]
         public async Task<IEnumerable<EnrichedItemDTO>> GetItems()
         {
             return await _openhabClient.GetItemsAsync();
