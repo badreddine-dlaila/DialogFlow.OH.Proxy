@@ -1,21 +1,18 @@
 # Smart home agent
 
-Ce dépôt contient :
+This repository contains the following main elements :
 
-- [un export zip](https://github.com/badreddine-dlaila/DialogFlow.OH.Proxy/raw/master/Smart-Home-14012019.zip) d'un agent dialogflow dont pour piloter une maison intelligente.
+- [zip export](https://github.com/badreddine-dlaila/DialogFlow.OH.Proxy/raw/master/Smart-Home-14012019.zip) A dialog flow agent that command a smart connected home
 
-- une Api .NET core (webhook) qui receoit des dialogflow webhook request sur l'adresse https://smarthome-proxy.azurewebsites.net/api/webhook/ et execute l'intent/action
-
-    >1. Si vous souhaitez lancer l'api en local, suivez les instructions [ici](https://code.visualstudio.com/docs/other/dotnet)
-    >2. Lancez [ngrok](https://ngrok.com/) en local et copier le lien sécurisé (https) dans le champ webhook du fulfillment
-    dans dialogflow 
+- A .NET Core Api (webhook) taht recieves dialogflow fulfillment requests https://smarthome-proxy.azurewebsites.net/api/webhook/ and execute the matching intent/action
 
 ## [Home dashboard](http://176.130.227.69:8080/basicui/app)
 
-    Un dashboard est disponible sur l'adresse : http://176.130.227.69:8080/basicui/app
+    smart home dashboard : http://176.130.227.69:8080/basicui/app
 
 ![openhab dashboard](Images/B5CDAA9F-1D8F-4796-854B-252E93298229.jpg)
 
+### <!> Important <!>
 pour éviter les surprise, référez-vous à l'agent example inclus dans ce dépôt ([Smart-Home-14012019.zip](https://github.com/badreddine-dlaila/DialogFlow.OH.Proxy/raw/master/Smart-Home-14012019.zip))
 
 Le [proxy](https://smarthome-proxy.azurewebsites.net/api/info) peut interpréter
