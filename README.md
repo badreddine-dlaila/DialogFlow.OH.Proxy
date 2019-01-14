@@ -27,6 +27,15 @@ Le [proxy](https://smarthome-proxy.azurewebsites.net/api/info) peut interpréter
     - *.off
     - *.on
     - *.set
+
+## Restore Agent
+![Restore Agent](Images/resore_agent.gif)
+## Set webhook
+![Set webhhok](Images/set_webhhok.gif)
+## Enable webhook
+![Enable webhhok](Images/enable_webhhok_call.gif)
+## Executing intents on dashboard (real time)
+![Executing intents](Images/executing_intents.gif)
     
  
 
