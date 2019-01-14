@@ -23,9 +23,9 @@ namespace DialogFlow.OH.Proxy.Controllers
         {
             return new
             {
-                HomeDashboard = "http://176.130.227.69:8080",
+                HomeDashboard = "http://176.130.227.69:8080/basicui/app",
                 Webhook = "https://smarthome-proxy.azurewebsites.net/api/webhook/",
-                DialogFlowProjectExtract = "",
+                DialogFlowProjectExtract = "https://1drv.ms/u/s!Apf2dopMaxbdn69ZjebWXIiRcpctLQ",
                 Rooms = new List<string>
                 {
                     "Entryway",
