@@ -9,4 +9,4 @@ Ce depot contient :
 ## [Home dashboard](http://176.130.227.69:8080/basicui/app)
     Un dashboard est disponible sur l'adresse : http://176.130.227.69:8080/basicui/app
 
-![openhab dashboard](Images/C5CDAA9F-1D8F-4796-854B-252E93298229.jpg)
+![openhab dashboard](Images/B5CDAA9F-1D8F-4796-854B-252E93298229.jpg)
