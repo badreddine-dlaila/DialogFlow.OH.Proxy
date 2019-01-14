@@ -8,16 +8,17 @@ namespace DialogFlow.OH.Proxy.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StatusController : ControllerBase
+    public class InfoController : ControllerBase
     {
         [HttpGet]
+        [Route("status")]
+
         public ActionResult<string> Get()
         {
             return "Proxy service up and running !";
         }
 
         [HttpGet]
-        [Route("Info")]
         public ActionResult<dynamic> Info()
         {
             return new
