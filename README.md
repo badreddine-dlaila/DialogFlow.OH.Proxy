@@ -16,8 +16,6 @@ Ce dépôt contient :
 
 ![openhab dashboard](Images/B5CDAA9F-1D8F-4796-854B-252E93298229.jpg)
 
-# Introduction 
-
 pour éviter les surprise, référez-vous à l'agent example inclus dans ce dépôt ([Smart-Home-14012019.zip](https://github.com/badreddine-dlaila/DialogFlow.OH.Proxy/raw/master/Smart-Home-14012019.zip))
 
 Le proxy peut interpréter
@@ -30,7 +28,7 @@ Le proxy peut interpréter
     - *.on
     - *.set
     
-# exemple de branchement avec un agent dialogflow  
+ 
 
 
 
