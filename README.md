@@ -20,7 +20,7 @@ Ce dépôt contient :
 
 pour éviter les surprise, référez-vous à l'agent example inclus dans ce dépôt ([Smart-Home-14012019.zip](https://github.com/badreddine-dlaila/DialogFlow.OH.Proxy/raw/master/Smart-Home-14012019.zip))
 
-Le proxy peut interpréter
+Le [proxy](https://smarthome-proxy.azurewebsites.net/api/info) peut interpréter
 1. les intents suivants ( Où * est le prefixe de votre projet. Dans l'exemple Smart-Home, * est remplacé par smarthome, pour donner par exemple *smarthome.device.switch.off* )
     - *.device.switch.off
     - *.device.switch.on
