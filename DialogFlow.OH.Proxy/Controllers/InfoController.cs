@@ -11,50 +11,14 @@ namespace DialogFlow.OH.Proxy.Controllers
     public class InfoController : ControllerBase
     {
         [HttpGet]
-        [Route("status")]
-
-        public ActionResult<string> Get()
-        {
-            return "Proxy service up and running !";
-        }
-
-        [HttpGet]
         public ActionResult<dynamic> Info()
         {
             return new
             {
-                HomeDashboard = "http://176.130.227.69:8080/basicui/app",
+                Status = "Proxy service up and running",
                 Webhook = "https://smarthome-proxy.azurewebsites.net/api/webhook/",
-                DialogFlowProjectExtract = "https://1drv.ms/u/s!Apf2dopMaxbdn69ZjebWXIiRcpctLQ",
-                Rooms = new List<string>
-                {
-                    "Entryway",
-                    "LivingDining",
-                    "Kitchen",
-                    "LaundryRoom",
-                    "Toilet",
-                    "MasterBedroom",
-                    "Bedroom",
-                    "Bathroom",
-                    "Toilet",
-                    "Garage"
-                },
-                SupportedDevices = new List<dynamic>
-                {
-                    new { Device = "Light", Command = "0-100", Room = "LivingDining" },
-                    new { Device = "Light", Command = "0-100", Room = "MasterBedroom" },
-                    new { Device = "Light", Command = "on-off", Room = "Entryway" },
-                    new { Device = "Light", Command = "on-off", Room = "Kitchen" },
-                    new { Device = "Light", Command = "on-off", Room = "LaundryRoom" },
-                    new { Device = "Light", Command = "on-off", Room = "Toilet" },
-                    new { Device = "Light", Command = "on-off", Room = "Bathroom" },
-                    new { Device = "Light", Command = "on-off", Room = "Bedroom" },
-
-                    new { Device = "Heating", Command = "0-100", Room = "LivingDining" },
-                    new { Device = "Heating", Command = "0-1OO", Room = "Bathroom" },
-
-                    new { Device = "Energy", Command = "on-off", Room = "All" },
-                }
+                HomeDashboard = "http://176.130.227.69:8080/basicui/app",
+                DialogFlowProjectExtract = "https://1drv.ms/u/s!Apf2dopMaxbdn69ZjebWXIiRcpctLQ"
             };
         }
 
