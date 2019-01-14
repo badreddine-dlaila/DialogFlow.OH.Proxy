@@ -184,7 +184,7 @@ namespace DialogFlow.OH.Proxy.Controllers
                     }
                     else
                     {
-                        var devicesInRoom = devices.Where(i => i.GroupNames.Any(gn=>gn.Contains(room.Humanize(LetterCasing.Title))));
+                        var devicesInRoom = devices.Where(i => i.GroupNames.Any(gn=>gn.ToLower().Contains(room.Dehumanize().ToLower())));
                         foreach (var d in devicesInRoom)
                         {
                             await _openhabClient.PostItemCommandAsync(d.Name, command);
