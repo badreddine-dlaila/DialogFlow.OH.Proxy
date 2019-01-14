@@ -6,13 +6,8 @@ This repository contains the following main elements :
 
 - A .NET Core Api (webhook) taht recieves dialogflow fulfillment requests https://smarthome-proxy.azurewebsites.net/api/webhook/ and execute the matching intent/action
 
-## [Home dashboard](http://176.130.227.69:8080/basicui/app)
-
-    smart home dashboard : http://176.130.227.69:8080/basicui/app
-
-![openhab dashboard](Images/B5CDAA9F-1D8F-4796-854B-252E93298229.jpg)
-
 ### <!> Important <!>
+
 pour éviter les surprise, référez-vous à l'agent example inclus dans ce dépôt ([Smart-Home-14012019.zip](https://github.com/badreddine-dlaila/DialogFlow.OH.Proxy/raw/master/Smart-Home-14012019.zip))
 
 Le [proxy](https://smarthome-proxy.azurewebsites.net/api/info) peut interpréter
@@ -24,6 +19,10 @@ Le [proxy](https://smarthome-proxy.azurewebsites.net/api/info) peut interpréter
     - *.off
     - *.on
     - *.set
+
+## [Home dashboard](http://176.130.227.69:8080/basicui/app)
+    smart home dashboard : http://176.130.227.69:8080/basicui/app
+![openhab dashboard](Images/B5CDAA9F-1D8F-4796-854B-252E93298229.jpg)
 
 ## Restore Agent
 ![Restore Agent](Images/resore_agent.gif)
