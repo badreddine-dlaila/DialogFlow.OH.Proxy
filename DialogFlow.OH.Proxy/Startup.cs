@@ -31,7 +31,7 @@ namespace DialogFlow.OH.Proxy
 
                 // get the base Uri from service disco (service name could come from configuration again...)
                 // or read the Uri from configuration if you want to hard code it...
-                var baseUri = new Uri("http://192.168.1.17:8080/rest");
+                var baseUri = new Uri("http://176.130.227.69:8080/rest");
 
                 return new OpenhabClient(baseUri, httpClient);
             });

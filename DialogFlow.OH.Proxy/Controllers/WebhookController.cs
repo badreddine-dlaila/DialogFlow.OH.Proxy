@@ -44,7 +44,9 @@ namespace DialogFlow.OH.Proxy.Controllers
                 var request = JsonParser.Parse<WebhookRequest>(reader);
                 var intent = request.QueryResult.Intent.DisplayName.ToLower();
                 var action = request.QueryResult.Action.ToLower();
-                var parameters = request.QueryResult.Parameters.Fields.ToDictionary(pair => pair.Key, value => value.Value.StringValue);
+                var parameters =
+                    request.QueryResult.Parameters.Fields.ToDictionary(pair => pair.Key,
+                        value => value.Value.StringValue);
 
                 var room = parameters["room"].ToLower();
                 var device = parameters["device"].ToLower();
@@ -55,14 +57,15 @@ namespace DialogFlow.OH.Proxy.Controllers
 
 
                 #region Lights
+
                 if (intent.Contains("light"))
                 {
                     var lights = items.Where(i => i.GroupNames.Contains("Light")).ToList();
 
                     // switch lights
                     if (intent.Contains("switch"))
-                        {
-                        if (string.IsNullOrEmpty(room) || all=="true")
+                    {
+                        if (string.IsNullOrEmpty(room) || all == "true")
                         {
                             await _openhabClient.PostItemCommandAsync("Light", command);
                             fulfillmentText = $"All lights switched {command.Humanize(LetterCasing.LowerCase)}";
@@ -84,20 +87,29 @@ namespace DialogFlow.OH.Proxy.Controllers
                     // dimmer Lights
                     if (intent.Contains("brightness"))
                     {
-                        var values = request.QueryResult.Parameters.Fields.ToDictionary(pair => pair.Key, v => v.Value.NumberValue);
-                        var changeValue = values.ContainsKey("change-value") ? values["change-value"] : 0;
-                        var finalValue = values["final-value"];
-                        var value = Math.Abs(finalValue) < 0 ? changeValue : finalValue;
+                        var dimmerValues =
+                            request.QueryResult.Parameters.Fields.ToDictionary(pair => pair.Key,
+                                v => v.Value.NumberValue);
+                        var dimmerChangeValue =
+                            dimmerValues.ContainsKey("change-value") ? dimmerValues["change-value"] : 0;
+                        var dimmerFinalValue = dimmerValues["final-value"];
+                        var dimmerValue = Math.Abs(dimmerFinalValue) < 0 ? dimmerChangeValue : dimmerFinalValue;
 
-                        if (command == "SET")
+                        if (command != "SET")
+                        {
+                            fulfillmentText = $"Only SET operation is supported ( check your action name ;) )";
+                        }
+                        else
                         {
                             if (string.IsNullOrEmpty(room) || all == "true")
                             {
-                                var dimmableLights = items.Where(i => i.Type == "Dimmer" && !i.Name.ToLower().Contains("hue"));
+                                var dimmableLights = items.Where(i =>
+                                    i.Type == "Dimmer" && !i.Name.ToLower().Contains("hue"));
                                 foreach (var dimmableLight in dimmableLights)
                                 {
-                                    await _openhabClient.PostItemCommandAsync(dimmableLight.Name, value.ToString(CultureInfo.InvariantCulture));
-                                    fulfillmentText = $"All lights brightness set on {value}";
+                                    await _openhabClient.PostItemCommandAsync(dimmableLight.Name,
+                                        dimmerValue.ToString(CultureInfo.InvariantCulture));
+                                    fulfillmentText = $"All lights brightness set on {dimmerValue}";
                                 }
                             }
 
@@ -108,8 +120,9 @@ namespace DialogFlow.OH.Proxy.Controllers
 
                                 if (light != null && light.Type == "Dimmer")
                                 {
-                                    await _openhabClient.PostItemCommandAsync(light.Name, value.ToString(CultureInfo.InvariantCulture));
-                                    fulfillmentText = $"Brightness set on {value}";
+                                    await _openhabClient.PostItemCommandAsync(light.Name,
+                                        dimmerValue.ToString(CultureInfo.InvariantCulture));
+                                    fulfillmentText = $"Brightness set on {dimmerValue}";
                                 }
                             }
                         }
@@ -119,46 +132,48 @@ namespace DialogFlow.OH.Proxy.Controllers
                 #endregion
 
                 #region devices
-                //if (intent.Contains("device.switch"))
-                //{
-                //    if (parameters.All(pair => string.IsNullOrEmpty(pair.Value)) || !string.IsNullOrEmpty(all) && string.IsNullOrEmpty(device))
-                //    {
-                //        var switchableItems = await _openhabClient.GetItemsAsync(tags: "Switch,Switchable");
-                //        var lightingItems = await _openhabClient.GetItemsAsync(tags: "Lighting");
-                //        var allDevices = switchableItems.Concat(lightingItems).ToList();
-                //        if (!string.IsNullOrEmpty(room))
-                //        {
-                //            var items = allDevices.Where(i => i.GroupNames.Any(s => s.Contains(room, StringComparison.OrdinalIgnoreCase)));
-                //            foreach (var item in items)
-                //            {
-                //                await _openhabClient.PostItemCommandAsync(item.Name, command);
-                //            }
-                //        }
-                //        else
-                //        {
-                //            foreach (var item in allDevices)
-                //            {
-                //                await _openhabClient.PostItemCommandAsync(item.Name, command);
-                //            }
-                //        }
-                //    }
 
-                //    if (device == "outlet")
-                //    {
-                //        var items = (await _openhabClient.GetItemsAsync()).Where(item => item.Category == "poweroutlet_us").ToList();
-                //        foreach (var item in items)
-                //        {
-                //            await _openhabClient.PostItemCommandAsync(item.Name, command);
-                //        }
+                // heating
+                if (intent.Contains("heating"))
+                {
 
-                //        if (!string.IsNullOrEmpty(room))
-                //        {
-                //            var item = items.FirstOrDefault(i => i.GroupNames.Any(s => s.Contains(room, StringComparison.OrdinalIgnoreCase)));
-                //            await _openhabClient.PostItemCommandAsync(item?.Name, command);
-                //        }
-                //    }
-                //}
-                #endregion
+                    var heatings = items.Where(i => i.GroupNames.Contains("Heating"));
+                    var heatingValues = request.QueryResult.Parameters.Fields.ToDictionary(pair => pair.Key, v => v.Value.NumberValue);
+                    var heatingValue = heatingValues["final-value"];
+
+                    if (command != "SET")
+                    {
+                        fulfillmentText = $"Only SET operation is supported ( check your action name ;) )";
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(room) || all == "true")
+                        {
+
+                            foreach (var heating in heatings)
+                            {
+                                await _openhabClient.PostItemCommandAsync(heating.Name,
+                                    heatingValue.ToString(CultureInfo.InvariantCulture));
+                                fulfillmentText = $"All HVAC set on {heatingValue}";
+                            }
+                        }
+
+                        else
+                        {
+                            var itemNamePart = $"{room.Dehumanize().ToLower()}_heating";
+                            var heating = heatings.FirstOrDefault(i => i.Name.ToLower().Contains(itemNamePart));
+
+                            if (heating != null)
+                            {
+                                await _openhabClient.PostItemCommandAsync(heating.Name,
+                                    heatingValue.ToString(CultureInfo.InvariantCulture));
+                                fulfillmentText = $"HVAC set on {heatingValue}";
+                            }
+                        }
+
+                        #endregion
+                    }
+                }
             }
 
             // Populate the response
