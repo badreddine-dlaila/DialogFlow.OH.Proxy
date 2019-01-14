@@ -57,7 +57,6 @@ namespace DialogFlow.OH.Proxy.Controllers
 
 
                 #region Lights
-
                 if (intent.Contains("light"))
                 {
                     var lights = items.Where(i => i.GroupNames.Contains("Light")).ToList();
@@ -120,23 +119,18 @@ namespace DialogFlow.OH.Proxy.Controllers
 
                                 if (light != null && light.Type == "Dimmer")
                                 {
-                                    await _openhabClient.PostItemCommandAsync(light.Name,
-                                        dimmerValue.ToString(CultureInfo.InvariantCulture));
+                                    await _openhabClient.PostItemCommandAsync(light.Name, dimmerValue.ToString(CultureInfo.InvariantCulture));
                                     fulfillmentText = $"Brightness set on {dimmerValue}";
                                 }
                             }
                         }
                     }
                 }
-
                 #endregion
 
-                #region devices
-
-                // heating
+                #region heating
                 if (intent.Contains("heating"))
                 {
-
                     var heatings = items.Where(i => i.GroupNames.Contains("Heating"));
                     var heatingValues = request.QueryResult.Parameters.Fields.ToDictionary(pair => pair.Key, v => v.Value.NumberValue);
                     var heatingValue = heatingValues["final-value"];
@@ -171,9 +165,34 @@ namespace DialogFlow.OH.Proxy.Controllers
                             }
                         }
 
-                        #endregion
                     }
                 }
+                #endregion
+
+                #region global controls
+                if (intent.Contains("device"))
+                {
+                    var devices = items.Where(i => i.Name.ToLower().Contains(device.Dehumanize().ToLower()));
+
+                    if (string.IsNullOrEmpty(room))
+                    {
+                        foreach (var d in devices)
+                        {
+                            await _openhabClient.PostItemCommandAsync(d.Name, command);
+                            fulfillmentText = $"device switched {command}";
+                        }
+                    }
+                    else
+                    {
+                        var devicesInRoom = devices.Where(i => i.GroupNames.Any(gn=>gn.Contains(room.Humanize(LetterCasing.Title))));
+                        foreach (var d in devicesInRoom)
+                        {
+                            await _openhabClient.PostItemCommandAsync(d.Name, command);
+                            fulfillmentText = $"device switched {command}";
+                        }
+                    }
+                }
+                #endregion
             }
 
             // Populate the response

@@ -41,17 +41,19 @@ namespace DialogFlow.OH.Proxy.Controllers
                 },
                 SupportedDevices = new List<dynamic>
                 {
-                    new { Device = "Light", Command = "brightness", Room = "LivingDining" },
-                    new { Device = "Light", Command = "brightness", Room = "MasterBedroom" },
-                    new { Device = "Light", Command = "0-100", Room = "Entryway" },
-                    new { Device = "Light", Command = "0-100", Room = "Kitchen" },
-                    new { Device = "Light", Command = "0-100", Room = "LaundryRoom" },
-                    new { Device = "Light", Command = "0-100", Room = "Toilet" },
-                    new { Device = "Light", Command = "0-100", Room = "Bathroom" },
-                    new { Device = "Light", Command = "0-100", Room = "Bedroom" },
+                    new { Device = "Light", Command = "0-100", Room = "LivingDining" },
+                    new { Device = "Light", Command = "0-100", Room = "MasterBedroom" },
+                    new { Device = "Light", Command = "on-off", Room = "Entryway" },
+                    new { Device = "Light", Command = "on-off", Room = "Kitchen" },
+                    new { Device = "Light", Command = "on-off", Room = "LaundryRoom" },
+                    new { Device = "Light", Command = "on-off", Room = "Toilet" },
+                    new { Device = "Light", Command = "on-off", Room = "Bathroom" },
+                    new { Device = "Light", Command = "on-off", Room = "Bedroom" },
 
                     new { Device = "Heating", Command = "0-100", Room = "LivingDining" },
                     new { Device = "Heating", Command = "0-1OO", Room = "Bathroom" },
+
+                    new { Device = "Energy", Command = "on-off", Room = "All" },
                 }
             };
         }
