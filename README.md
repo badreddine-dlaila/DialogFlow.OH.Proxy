@@ -14,7 +14,10 @@ Le [proxy](https://smarthome-proxy.azurewebsites.net/api/info) peut interpréter
 1. les intents suivants ( Où * est le prefixe de votre projet. Dans l'exemple Smart-Home, * est remplacé par smarthome, pour donner par exemple *smarthome.device.switch.off* )
     - *.device.switch.off
     - *.device.switch.on
-    - *.device.brightness.set
+    - *.lights.switch.off
+    - *.lights.switch.on
+    - *.lights.brightness.set
+    - *.heating.set
  2. les action suivantes ( Où * peut etre par example le nom de l'intent, Dans l'exemple Smart-Home, * est remplacé par smarthome, pour donner par exemple *smarthome.device.switch.off* ):
     - *.off
     - *.on
