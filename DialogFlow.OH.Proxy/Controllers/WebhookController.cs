@@ -100,7 +100,7 @@ namespace DialogFlow.OH.Proxy.Controllers
                         }
                         else
                         {
-                            if (string.IsNullOrEmpty(room) || all == "true")
+                            if (string.IsNullOrEmpty(room) || all == "true" || room.ToLower().Equals("all"))
                             {
                                 var dimmableLights = items.Where(i =>
                                     i.Type == "Dimmer" && !i.Name.ToLower().Contains("hue"));
@@ -141,7 +141,7 @@ namespace DialogFlow.OH.Proxy.Controllers
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(room) || all == "true")
+                        if (string.IsNullOrEmpty(room) || all == "true" || room.ToLower().Equals("all"))
                         {
 
                             foreach (var heating in heatings)
