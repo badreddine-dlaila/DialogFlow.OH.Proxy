@@ -64,7 +64,7 @@ namespace DialogFlow.OH.Proxy.Controllers
                     // switch lights
                     if (intent.Contains("switch"))
                     {
-                        if (string.IsNullOrEmpty(room) || all == "true")
+                        if (string.IsNullOrEmpty(room) || all == "true" || room.ToLower().Equals("all"))
                         {
                             await _openhabClient.PostItemCommandAsync("Light", command);
                             fulfillmentText = $"All lights switched {command.Humanize(LetterCasing.LowerCase)}";
