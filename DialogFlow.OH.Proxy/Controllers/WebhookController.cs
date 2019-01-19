@@ -50,7 +50,7 @@ namespace DialogFlow.OH.Proxy.Controllers
 
                 var room = parameters["room"].ToLower();
                 var device = parameters["device"].ToLower();
-                var all = parameters["all"].ToLower();
+                var all = dict.ContainsKey("all") ? parameters["all"].ToLower() : "";
                 var command = action.Split(".").Last().ToUpper();
 
                 var items = await _openhabClient.GetItemsAsync();
