@@ -50,7 +50,7 @@ namespace DialogFlow.OH.Proxy.Controllers
 
                 var room = parameters["room"].ToLower();
                 var device = parameters["device"].ToLower();
-                var all = parameters["all"].ToLower();
+                var all = dict.ContainsKey("all") ? parameters["all"].ToLower() : "";
                 var command = action.Split(".").Last().ToUpper();
 
                 var items = await _openhabClient.GetItemsAsync();
@@ -64,7 +64,7 @@ namespace DialogFlow.OH.Proxy.Controllers
                     // switch lights
                     if (intent.Contains("switch"))
                     {
-                        if (string.IsNullOrEmpty(room) || all == "true")
+                        if (string.IsNullOrEmpty(room) || all == "true" || room.ToLower().Equals("all"))
                         {
                             await _openhabClient.PostItemCommandAsync("Light", command);
                             fulfillmentText = $"All lights switched {command.Humanize(LetterCasing.LowerCase)}";
@@ -100,7 +100,7 @@ namespace DialogFlow.OH.Proxy.Controllers
                         }
                         else
                         {
-                            if (string.IsNullOrEmpty(room) || all == "true")
+                            if (string.IsNullOrEmpty(room) || all == "true" || room.ToLower().Equals("all"))
                             {
                                 var dimmableLights = items.Where(i =>
                                     i.Type == "Dimmer" && !i.Name.ToLower().Contains("hue"));
@@ -141,7 +141,7 @@ namespace DialogFlow.OH.Proxy.Controllers
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(room) || all == "true")
+                        if (string.IsNullOrEmpty(room) || all == "true" || room.ToLower().Equals("all"))
                         {
 
                             foreach (var heating in heatings)
